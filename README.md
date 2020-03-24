@@ -31,6 +31,8 @@ A collection of modules that serve as examples for the Somiibo API.
 
 ## Using Any Module Package in Somiibo
 When you import a custom package into Somiibo, you can supply a local path or a URL.
+- Local example: `/Users/you/Desktop/Somiibo/module-package-examples/main.json`
+- Remote example: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json)
 
 If you supply a local path, the package will be loaded directly from your computer while, conversely, if you supply a URL Somiibo will attempt to load the package from your remote server.
 
@@ -39,8 +41,6 @@ If you supply a local path, the package will be loaded directly from your comput
 2. Select the **Module packages** tab.
 3. Click the plus button **(+)**.
 4. Enter the local file path or the remote URL that points to your package's `main.json`.
-- Local example: `/Users/you/Desktop/Somiibo/module-package-examples/main.json`
-- Remote example: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json)
 5. Select **Add package** and you're done!
 
 You should now see your custom package added to the list of packages.
