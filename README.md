@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://somiibo.com">
-    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/somiibo-appicon-1024x1024.png?cb=1584692583">
+    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/somiibo-appicon-320x320.png?cb=1584692583">
   </a>
   <br>
   <br>
