@@ -257,7 +257,7 @@ somiibo.log(somiibo.getURL());
   - `retrieve` <?[Array]<[string]>> An array of attributes or element properties to include in the returned array
   - `wait` <?[number]> A maximum number of milliseconds to wait as the selector is periodically polled
 
-- returns: <[Promise]<[Somiibo]>> - The method resolves when the element is found or determined to not exist.
+- returns: <[Promise]<[Object]>> - The method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
 
 The method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
@@ -291,7 +291,7 @@ const elements3 = await somiibo.select('a') // select the element
   - `offsetX` <?[number]> Offset scroll amount on x axis
   - `offsetY` <?[number]> Offset scroll amount on y axis
 
-- returns: <[Promise]<[Somiibo]>> - The method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation).
+- returns: <[Promise]<[Object]>> - The method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation) and returns the result of the scroll.
 
 The method scrolls the page based on the current position of the mouse and stores the result in `somiibo.property.scroll`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
@@ -317,7 +317,7 @@ await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
   - `offsetX` <?[number]> Offset scroll amount on x axis
   - `offsetY` <?[number]> Offset scroll amount on y axis
 
-- returns: <[Promise]<[Somiibo]>> - The method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation).
+- returns: <[Promise]<[Object]>> - The method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
 
 The method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
@@ -339,7 +339,7 @@ await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
   - `offsetX` <?[number]> Offset click amount on x axis
   - `offsetY` <?[number]> Offset click amount on y axis
 
-- returns: <[Promise]<[Somiibo]>> - The method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation).
+- returns: <[Promise]<[Object]>> - The method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
 
 The method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
@@ -363,7 +363,7 @@ await somiibo.click('$selected');
   - `delayMin` <?[number]> Minimum delay between keystrokes
   - `delayMax` <?[number]> Maximum delay between keystrokes
 
-- returns: <[Promise]<[Somiibo]>> - The method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation).
+- returns: <[Promise]<[Object]>> - The method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation) and returns the result of the keyboad type.
 
 The method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.type`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
