@@ -281,8 +281,8 @@ const elements2 = await somiibo.select('a', {
 ```
 ```js
 const elements3 = await somiibo.select('a') // select the element
-  .then((el) => r.scroll(undefined, {offsetY: 100})) // scroll to it
-  .then((el) => r.click()); // then click it
+  .then(() => somiibo.scroll(undefined, {offsetY: 100})) // scroll to it
+  .then(() => somiibo.click()); // then click it
 ```
 
 #### somiibo.scroll(position, options)
@@ -305,7 +305,7 @@ await somiibo.scroll({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
 ```
 ```js
 await somiibo.select('a')
-  .then((el) => r.scroll(undefined, {offsetY: 100}));
+  .then(() => somiibo.scroll(undefined, {offsetY: 100}));
 ```
 ```js
 await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
@@ -327,7 +327,7 @@ await somiibo.move({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
 ```
 ```js
 await somiibo.select('a')
-  .then((el) => r.move(undefined, {offsetY: 100}));
+  .then(() => somiibo.move(undefined, {offsetY: 100}));
 ```
 ```js
 await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
@@ -351,7 +351,7 @@ await somiibo.click({x: 100, y: 100});
 ```
 ```js
 await somiibo.select('a')
-  .then((el) => r.click());
+  .then(() => somiibo.click());
 ```
 ```js
 await somiibo.click('$selected');
