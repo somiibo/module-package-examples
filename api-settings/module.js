@@ -3,8 +3,8 @@ let settings;
 async function main(mod) {
   somiibo = mod;
 
-  somiibo.configure(() => {
-    // The .configure() method is a great place to make changes to the settings
+  somiibo.initialize(() => {
+    // The .initialize() method is a great place to make changes to the settings
     // Any changed settings are removed after the module stops, so you don't need to worry about accidentally overwriting
     settings = somiibo.getSetting();
     settings.myNumber *= 2;

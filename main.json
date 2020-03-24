@@ -9,7 +9,7 @@
       "id": "131a71c5-c30c-49cc-aede-717cc5a76564",
       "name": "api-flow",
       "title": "API: Flow",
-      "description": "Exploring the .configure(), .loop(), .stop(), & .wait() methods.",
+      "description": "Exploring the .initialize(), .loop(), .stop(), & .wait() methods.",
       "icon": "fa-code",
       "version": "1.0.0",
       "versionRequired": "0.2.900",

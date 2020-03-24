@@ -5,7 +5,7 @@ async function main(mod) {
   somiibo = mod;
 
   // Let's save all our user-supplied settings to a variable so we can access them later
-  somiibo.configure(() => {
+  somiibo.initialize(() => {
     settings = somiibo.getSetting();
   });
 

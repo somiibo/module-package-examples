@@ -99,16 +99,16 @@ module.exports = main;
 The `Somiibo` library is the first argument passed to the exported function, so as seen here, `mod` can be stored to a variable `somiibo` in the global scope so that it can be accessed throughout the rest of the module's lifecycle.
 
 ### Flow
-#### somiibo.configure(fn)
+#### somiibo.initialize(fn)
 - `fn` <[function]> A [function] to execute
 
 - returns: <`null`>
 
-The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.configure()` will be ignored.
+The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored.
 
 Examples:
 ```js
-somiibo.configure(() => {
+somiibo.initialize(() => {
   somiibo.log('Hello, World! I only run once.');
 });
 ```

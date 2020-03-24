@@ -5,7 +5,7 @@ async function main(mod) {
 
   // Configure can only run once in a given module's lifecycle
   // It should be used to configure the module or set up things
-  somiibo.configure(() => {
+  somiibo.initialize(() => {
     counter = 0;
   });
 
