@@ -86,8 +86,8 @@ As basic `module.js` looks something like this:
 ```js
 let somiibo:
 async function main(mod) {
-	somiibo = mod;
-	somiibo.loop(main);
+  somiibo = mod;
+  somiibo.loop(main);
 }
 module.exports = main;
 ```
@@ -104,7 +104,7 @@ The method runs only once and as such it is an easy way to implement any configu
 Examples:
 ```js
 somiibo.configure(() => {
-	somiibo.log('Hello, World! I only run once.');
+  somiibo.log('Hello, World! I only run once.');
 });
 ```
 
@@ -120,8 +120,8 @@ Examples:
 ```js
 let somiibo:
 async function main(mod) {
-	somiibo = mod;
-	somiibo.loop(main);
+  somiibo = mod;
+  somiibo.loop(main);
 }
 module.exports = main;
 ```
@@ -135,8 +135,8 @@ Examples:
 ```js
 let somiibo:
 async function main(mod) {
-	somiibo = mod;
-	somiibo.stop();
+  somiibo = mod;
+  somiibo.stop();
 }
 module.exports = main;
 ```
@@ -196,8 +196,8 @@ somiibo.openDevTools();
 #### somiibo.navigate(url, options)
 - `url` <[string]> A URL to navigate to
 - `options` <?[Object]>
-	- `httpReferrer` <?[string]> An HTTP Referrer URL
-	- `userAgent` <?[string]> A user agent originating the request
+  - `httpReferrer` <?[string]> An HTTP Referrer URL
+  - `userAgent` <?[string]> A user agent originating the request
 - returns: <[Promise]<`null`>> - The promise resolves when the page finishes loading
 
 Navigates the module webpage.
@@ -208,8 +208,8 @@ somiibo.navigate('https://google.com');
 ```
 ```js
 somiibo.navigate('https://google.com', {
-	httpReferrer: 'https://reddit.com',
-	userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+  httpReferrer: 'https://reddit.com',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
 });
 ```
 
@@ -300,7 +300,7 @@ await somiibo.scroll({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
 ```
 ```js
 await somiibo.select('a')
-	.then((el) => r.scroll(undefined, {offsetY: 100}));
+  .then((el) => r.scroll(undefined, {offsetY: 100}));
 ```
 ```js
 await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
@@ -322,7 +322,7 @@ await somiibo.move({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
 ```
 ```js
 await somiibo.select('a')
-	.then((el) => r.move(undefined, {offsetY: 100}));
+  .then((el) => r.move(undefined, {offsetY: 100}));
 ```
 ```js
 await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
@@ -346,7 +346,7 @@ await somiibo.click({x: 100, y: 100});
 ```
 ```js
 await somiibo.select('a')
-	.then((el) => r.click());
+  .then((el) => r.click());
 ```
 ```js
 await somiibo.click('$selected');
@@ -413,21 +413,21 @@ This method executes a function in the context of the module webpage. In the bro
 Examples:
 ```js
 await somiibo.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', true)
-	.then((result) => { console.log(result) })
+  .then((result) => { console.log(result) })
 ```
 
 ### Workers
 #### somiibo.worker(fn, options)
 - `fn` <[function]> Function to be passed to the worker process
 - `options` <[Object]>
-	- `arguments` <?[Array]> Arguments to be passed to the worker script
-	- `url` <?[string]> The URL to open the worker to
-	- `httpReferrer` <?[string]> An HTTP Referrer URL
-	- `userAgent` <?[string]> A user agent originating the request
-	- `proxy` <?[string]> A proxy that the worker should connect to	-
-	- `timeout` <?[number]> A maximum number of milliseconds before the worker is automatically closed.
-	- `width` <?[number]> The width of the worker window
-	- `height` <?[number]> The height of the worker window
+  - `arguments` <?[Array]> Arguments to be passed to the worker script
+  - `url` <?[string]> The URL to open the worker to
+  - `httpReferrer` <?[string]> An HTTP Referrer URL
+  - `userAgent` <?[string]> A user agent originating the request
+  - `proxy` <?[string]> A proxy that the worker should connect to  -
+  - `timeout` <?[number]> A maximum number of milliseconds before the worker is automatically closed.
+  - `width` <?[number]> The width of the worker window
+  - `height` <?[number]> The height of the worker window
 
 - returns: <[Promise]<[Object]>> - The method resolves when the worker launches. The resolve will always happen before the worker times out.
 
@@ -438,19 +438,19 @@ Note: Currently, launching a worker requires a page navigation to a custom inner
 Examples:
 ```js
 await somiibo.worker(async function (one, two, three) {
-	let _ = require('lodash');
-	console.log('Arg one', one);
-	console.log('Arg two', two);
-	console.log('Arg three', three);
-	console.log('lodash', _.get(three, 'key'));
-	console.log(window.location.href);
+  let _ = require('lodash');
+  console.log('Arg one', one);
+  console.log('Arg two', two);
+  console.log('Arg three', three);
+  console.log('lodash', _.get(three, 'key'));
+  console.log(window.location.href);
 }, {
-	arguments: ['one', 23 * 3, {key: 3}],
-	url: 'https://app.somiibo.com/tools/diagnostic/',
-	proxy: '209.97.189.171:8080',
-	userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-	referrer: 'https://google.com',
-	timeout: 60000,
+  arguments: ['one', 23 * 3, {key: 3}],
+  url: 'https://app.somiibo.com/tools/diagnostic/',
+  proxy: '209.97.189.171:8080',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+  referrer: 'https://google.com',
+  timeout: 60000,
 });
 ```
 
@@ -466,23 +466,23 @@ somiibo.log(somiibo.getOS());
 ```
 ```js
 {
-	platform: 'win32',
-	name: 'windows',
-	version: '10.0.17763',
+  platform: 'win32',
+  name: 'windows',
+  version: '10.0.17763',
 }
 ```
 ```js
 {
-	platform: 'darwin',
-	name: 'mac',
-	version: '10.15.4',
+  platform: 'darwin',
+  name: 'mac',
+  version: '10.15.4',
 }
 ```
 ```js
 {
-	platform: 'linux',
-	name: 'mac',
-	version: '10.15.4',
+  platform: 'linux',
+  name: 'mac',
+  version: '10.15.4',
 }
 ```
 
@@ -499,10 +499,10 @@ Display an alert message to the user.
 Examples:
 ```js
 somiibo.alert({
-	type: 'success', // 'success', 'warning', 'danger', 'info',
-	title: 'Hello, World!',
-	content: '<h1>Greetings</h1> <br> This is my message.',
-	button: 'Goodbye',
+  type: 'success', // 'success', 'warning', 'danger', 'info',
+  title: 'Hello, World!',
+  content: '<h1>Greetings</h1> <br> This is my message.',
+  button: 'Goodbye',
 });
 ```
 
@@ -559,7 +559,7 @@ async function main(settings) {
   settings.on('submit', function (data) {
     return {
       error: new Error('This field has an error!'),
-      input: 'fieldName' // Supplying the name of the setting will automatically highlight it for the user 
+      input: 'fieldName' // Supplying the name of the setting will automatically highlight it for the user
     }
   })
 }
