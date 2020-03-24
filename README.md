@@ -1,5 +1,30 @@
+<div align="center">
+  <a href="https://somiibo.com">
+    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/somiibo-appicon-1024x1024.png?cb=1584692583">
+  </a>
+  <br>
+  <br>
 
+<!-- ![GitHub package.json version](https://img.shields.io/github/package-json/v/somiibo/module-package-examples.svg) -->
 
+<!-- ![David](https://img.shields.io/david/somiibo/module-package-examples.svg) -->
+<!-- ![David](https://img.shields.io/david/dev/somiibo/module-package-examples.svg)  -->
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/somiibo/module-package-examples.svg)
+<!-- ![npm bundle size](https://img.shields.io/bundlephobia/min/module-package-examples.svg) -->
+<!-- ![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability-percentage/somiibo/module-package-examples.svg) -->
+<!-- ![npm](https://img.shields.io/npm/dm/module-package-examples.svg) -->
+<!-- ![node](https://img.shields.io/node/v/module-package-examples.svg) -->
+![Website](https://img.shields.io/website/https/somiibo.com.svg)
+![GitHub](https://img.shields.io/github/license/somiibo/module-package-examples.svg)
+![GitHub contributors](https://img.shields.io/github/contributors/somiibo/module-package-examples.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/somiibo/module-package-examples.svg)
+
+# Somiibo
+**Somiibo** is a free platform to develop web automation scripts.
+
+[Site](https://somiibo.com) | [NPM Module](https://www.npmjs.com/package/somiibo) | [GitHub Repo](https://github.com/somiibo/module-package-examples)
+
+</div>
 
 # Module Package Examples for Somiibo
 A collection of modules that serve as examples for the Somiibo API.
