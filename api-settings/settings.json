@@ -9,19 +9,19 @@
     },
     {
       "name": "myText",
-      "required": true,
+      "required": true
     },
     {
       "name": "myTextArea",
-      "required": true,
+      "required": true
     },
     {
-      "name": "myCheck",
+      "name": "myCheck"
     },
     {
       "name": "mySelect",
       "required": true,
-      "type": "number",
-    },
+      "type": "number"
+    }
   ]
 }

@@ -79,7 +79,11 @@ Your remote URL will be something like `https://<username>.github.io/<repo>/main
 For example, this package is hosted on GitHub pages at this address: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json).
 
 ## Somiibo module.js API
+The `module.js` script is the actual logic behind a module. It exists in a separate context from the module webpage.
+
 While on the module page within Somiibo, you can press <kbd>cmd</kbd>+<kbd>options</kbd>+<kbd>i</kbd> or <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>i</kbd> to open the developer tools.
+
+From within the `module.js` script you can `require` any core Node.js module as well as any of the supported 3rd party modules.
 
 ### Skeleton script
 As basic `module.js` looks something like this:
@@ -99,7 +103,7 @@ The `Somiibo` library is the first argument passed to the exported function, so 
 
 - returns: <`null`>
 
-The method runs only once and as such it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.configure()` will be ignored.
+The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.configure()` will be ignored.
 
 Examples:
 ```js
@@ -196,7 +200,7 @@ somiibo.openDevTools();
 #### somiibo.navigate(url, options)
 - `url` <[string]> A URL to navigate to
 - `options` <?[Object]>
-  - `httpReferrer` <?[string]> An HTTP Referrer URL
+  - `referrer` <?[string]> An HTTP Referrer URL
   - `userAgent` <?[string]> A user agent originating the request
 - returns: <[Promise]<`null`>> - The promise resolves when the page finishes loading
 
@@ -208,7 +212,7 @@ somiibo.navigate('https://google.com');
 ```
 ```js
 somiibo.navigate('https://google.com', {
-  httpReferrer: 'https://reddit.com',
+  referrer: 'https://reddit.com',
   userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
 });
 ```
@@ -276,8 +280,8 @@ const elements2 = await somiibo.select('a', {
 ```
 ```js
 const elements3 = await somiibo.select('a') // select the element
-    .then((el) => r.scroll(undefined, {offsetY: 100})) // scroll to it
-    .then((el) => r.click()); // then click it
+  .then((el) => r.scroll(undefined, {offsetY: 100})) // scroll to it
+  .then((el) => r.click()); // then click it
 ```
 
 #### somiibo.scroll(position, options)
@@ -422,7 +426,7 @@ await somiibo.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/use
 - `options` <[Object]>
   - `arguments` <?[Array]> Arguments to be passed to the worker script
   - `url` <?[string]> The URL to open the worker to
-  - `httpReferrer` <?[string]> An HTTP Referrer URL
+  - `referrer` <?[string]> An HTTP Referrer URL
   - `userAgent` <?[string]> A user agent originating the request
   - `proxy` <?[string]> A proxy that the worker should connect to  -
   - `timeout` <?[number]> A maximum number of milliseconds before the worker is automatically closed.
@@ -507,7 +511,9 @@ somiibo.alert({
 ```
 
 ## Somiibo settings.js API
-The `settings.js` works in conjunction with `settings.html` and `settings.json` to deliver a customizable experience to the user.
+The `settings.js` API works in conjunction with `settings.html` and `settings.json` to deliver a customizable experience to the user.
+
+From within the `settings.js` script you can `require` any core Node.js module as well as any of the supported 3rd party modules.
 
 ### Skeleton script
 As basic `settings.js` module looks something like this:
@@ -540,7 +546,7 @@ module.exports = main;
 #### event: 'submit'
 - `data` <[Object]> The user's settings serialized into a JSON object
 
-Emitted when the settings are saved by the user.
+Emitted when the settings are saved by the user. Any changes made to the `data` object will overwrite the user's settings.
 
 Examples:
 ```js
@@ -566,6 +572,83 @@ async function main(settings) {
 module.exports = main;
 ```
 
+## Somiibo settings.json API
+The `settings.json` API works in conjunction with `settings.html` and `settings.js` to deliver a customizable experience to the user.
+
+The `settings.json` file can be in [JSON] format as well as [JSON5]. JSON5 is a newer implementation of JSON that allows comments, and trailing commas, among a few other things.
+
+### Skeleton file
+As basic `settings.json` module looks something like this:
+```json
+{
+  "fields": [
+
+  ]
+}
+```
+Only the settings that are included in this file are passed to the `module.js` script.
+
+#### Settings.json Fields
+- `name` <[string]> The name of the settings field
+- `default` <?[any]> The default value of the field
+- `required` <?[boolean]> Determines if the field is required
+- `type` <?[string]> Specify the type of the setting (`string`, `number`, `boolean`)
+- `min` <?[number]> Minimum value for a [number] field or the minimum length of a [string] field
+- `max` <?[number]> Maximum value for a [number] field or the maximum length of a [string] field
+
+The only required field is `name`. Although `type` is not required, it is useful to set as it will automatically convert the user's settings to match the type. For example, if the type is `number` but a `string` is provided, the string will be converted to a number prior to being saved.
+
+Examples:
+```js
+{
+  "fields": [
+    {
+      "name": "myNumber",
+      "required": true,
+      "default": 1,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "name": "myText",
+      "required": true
+    },
+    {
+      "name": "myTextArea",
+      "required": true
+    },
+    {
+      "name": "myCheck"
+    },
+    {
+      "name": "mySelect",
+      "required": true,
+      "type": "number"
+    }
+  ]
+}
+```
+
+## Somiibo settings.html API
+The `settings.html` API works in conjunction with `settings.js` and `settings.json` to deliver a customizable experience to the user.
+
+The `settings.html` file **must not** contain `html`, `head`, or `body` tags, as it will be inserted into an existing DOM. It also cannot contain any `script` tags, as that is what the `settings.js` is for.
+
+The `settings.html` file will automatically be styled by our custom implementation of [Bootstrap] so the use of Bootstrap classes is highly encouraged.
+
+### Skeleton file
+As basic `settings.html` file looks something like this:
+```html
+<settings>
+  <form>
+    <button type="submit" class="btn btn-lg btn-block btn-primary">Save settings</button>
+  </form>
+</settings>
+```
+
+[Bootstrap]: https://getbootstrap.com/ "Bootstrap 4"
+[JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON"
+[JSON5]: https://json5.org/ "JSON5"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type "String"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type "Number"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type "Boolean"
