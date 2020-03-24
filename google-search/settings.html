@@ -1,0 +1,45 @@
+<settings>
+  <form>
+    <div id="settings-accordian">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title mb-0">
+            <a class="btn btn-link pl-0 collapsed" href="#" data-toggle="collapse" data-target="#settings-panel-1">
+              <h5 class="mb-0"><i class="fas fa-search"></i> Search</h5>
+            </a>
+          </div>
+          <div class="collapse" id="settings-panel-1" data-parent="#settings-accordian">
+            <div class="card-text mt-3">
+              <p class="">Let's enter a custom search query.</p>
+              <div class="form-group">
+                <label for="searchQuery">Custom search query</label>
+                <input type="text" class="form-control" id="searchQuery" name="searchQuery" placeholder="Cat pictures">
+                <small class="form-text text-muted">You can enter anything here, but it must be two words!</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title mb-0">
+            <a class="btn btn-link pl-0 collapsed" href="#" data-toggle="collapse" data-target="#settings-panel-2">
+              <h5 class="mb-0"><i class="fas fa-puzzle-piece"></i> Some more settings</h5>
+            </a>
+          </div>
+          <div class="collapse" id="settings-panel-2" data-parent="#settings-accordian">
+            <div class="card-text mt-3">
+              <p class="">Here's a few more settings we can customize.</p>
+              <div class="form-group">
+                <label for="resultToClick">Search result to click</label>
+                <input type="number" class="form-control" id="resultToClick" name="resultToClick">
+                <small class="form-text text-muted">Enter a number from 1 to 10 representing which search result to click.</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-lg btn-block btn-primary">Save settings</button>
+    </div>
+  </form>
+</settings>

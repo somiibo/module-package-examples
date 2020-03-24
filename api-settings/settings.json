@@ -1,0 +1,27 @@
+{
+  "fields": [
+    {
+      "name": "myNumber",
+      "required": true,
+      "default": 1,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "name": "myText",
+      "required": true,
+    },
+    {
+      "name": "myTextArea",
+      "required": true,
+    },
+    {
+      "name": "myCheck",
+    },
+    {
+      "name": "mySelect",
+      "required": true,
+      "type": "number",
+    },
+  ]
+}

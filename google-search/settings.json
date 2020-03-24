@@ -1,0 +1,15 @@
+{
+  "fields": [
+    {
+      "name": "searchQuery",
+      "required": true,
+    },
+    {
+      "name": "resultToClick",
+      "required": true,
+      "type": "number",
+      "min": 1,
+      "max": 10,
+    }
+  ]
+}
