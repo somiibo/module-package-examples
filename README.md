@@ -662,7 +662,7 @@ When you import a custom package into Somiibo, you can supply a local path or a 
 If you supply a local path, the package will be loaded directly from your computer while, conversely, if you supply a URL Somiibo will attempt to load the package from your remote server.
 
 <!-- 1. Open the settings page in Somiibo by navigating to <a href="somiibo://settings">somiibo://settings</a> or pressing <kbd>cmd</kbd>+<kbd>,</kbd> or <kbd>ctrl</kbd>+<kbd>,</kbd>. -->
-1. Open the settings page in Somiibo by navigating to [https://app.somiibo.com?page=somiibo://settings](somiibo://settings) or pressing <kbd>cmd</kbd>+<kbd>,</kbd> or <kbd>ctrl</kbd>+<kbd>,</kbd>.
+1. Open the settings page in Somiibo by navigating to [somiibo://settings](https://app.somiibo.com?page=somiibo://settings) or pressing <kbd>cmd</kbd>+<kbd>,</kbd> or <kbd>ctrl</kbd>+<kbd>,</kbd>.
 2. Select the **Module packages** tab.
 3. Click the plus button **(+)**.
 4. Enter the local file path or the remote URL that points to your package's `main.json`.
