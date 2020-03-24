@@ -105,7 +105,7 @@ The `Somiibo` library is the first argument passed to the exported function, so 
 
 - returns: <`null`>
 
-The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored. `defaults` for each method can be overwritten here via `defaults[method][name] = 'new'`.
+This method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored. `defaults` for each method can be overwritten here via `defaults[method][name] = 'new'`.
 
 Examples:
 ```js
@@ -157,9 +157,9 @@ module.exports = main;
 #### somiibo.wait(time, timeMax)
 - `time` <[number]> Time in milliseconds to wait
 - `timeMax` <?[number]> Optional time to randomize the wait.
-- returns: <[Promise]<`number`>> - The promise resolves when the wait is over with the amount of milliseconds waited.
+- returns: <[Promise]<[number]>> - The promise resolves when the wait is over with the amount of milliseconds waited.
 
-The method pauses execution of the script.
+This method pauses execution of the script.
 
 Examples:
 ```js
@@ -265,9 +265,9 @@ somiibo.log(somiibo.getURL());
   - `retrieve` <?[Array]<[string]>> An array of attributes or element properties to include in the returned array
   - `wait` <?[number]> A maximum number of milliseconds to wait as the selector is periodically polled
 
-- returns: <[Promise]<[Object]>> - The method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
+- returns: <[Promise]<[Object]>> - This method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
 
-The method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 Note: Since the module webpage runs in a separate process, it is not possible to access the [ElementHandle] directly from `somiibo.property.select`. Instead, `somiibo.property.select` will contain a jQuery-like representation of the result.
 
@@ -299,9 +299,9 @@ const elements3 = await somiibo.select('a') // select the element
   - `offsetX` <?[number]> Offset scroll amount on x axis
   - `offsetY` <?[number]> Offset scroll amount on y axis
 
-- returns: <[Promise]<[Object]>> - The method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation) and returns the result of the scroll.
+- returns: <[Promise]<[Object]>> - This method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation) and returns the result of the scroll.
 
-The method scrolls the page based on the current position of the mouse and stores the result in `somiibo.property.scroll`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method scrolls the page based on the current position of the mouse and stores the result in `somiibo.property.scroll`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 If `position` is `undefined` or `$selected`, the method will try to scroll to the currently selected element.
 
@@ -325,9 +325,9 @@ await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
   - `offsetX` <?[number]> Offset scroll amount on x axis
   - `offsetY` <?[number]> Offset scroll amount on y axis
 
-- returns: <[Promise]<[Object]>> - The method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
+- returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
 
-The method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 Examples:
 ```js
@@ -347,9 +347,9 @@ await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
   - `offsetX` <?[number]> Offset click amount on x axis
   - `offsetY` <?[number]> Offset click amount on y axis
 
-- returns: <[Promise]<[Object]>> - The method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
+- returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
 
-The method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 If `position` is `undefined` or `$selected`, the method will try to click on the currently selected element.
 
@@ -371,9 +371,9 @@ await somiibo.click('$selected');
   - `delayMin` <?[number]> Minimum delay between keystrokes
   - `delayMax` <?[number]> Maximum delay between keystrokes
 
-- returns: <[Promise]<[Object]>> - The method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation) and returns the result of the keyboad type.
+- returns: <[Promise]<[Object]>> - This method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation) and returns the result of the keyboad type.
 
-The method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.type`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.type`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 Special keys such as `Enter` must be **in their own array element**:
 ```js
@@ -397,7 +397,7 @@ await somiibo.type(['Hello, World!'], {delayMin: 90, delayMax: 140});
 - `options` <[Object]>
   - `wait` <?[number]> A maximum number of milliseconds to wait as the variable is periodically polled
 
-- returns: <[Promise]<`any`>> - The method resolves when the variable is retrieved an either matches the compare function or times out.
+- returns: <[Promise]<`any`>> - This method resolves when the variable is retrieved an either matches the compare function or times out.
 
 Get and return a variable from within the webpage. Only global scoped variables are acessible.
 
@@ -442,7 +442,7 @@ await somiibo.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/use
   - `width` <?[number]> The width of the worker window
   - `height` <?[number]> The height of the worker window
 
-- returns: <[Promise]<[Object]>> - The method resolves when the worker launches. The resolve will always happen before the worker times out.
+- returns: <[Promise]<[Object]>> - This method resolves when the worker launches. The resolve will always happen before the worker times out.
 
 This method launches a worker process--an isolated webpage that acts like an iframe--within the module webpage. Workers are useful for bulk tasks.
 
@@ -471,7 +471,7 @@ await somiibo.worker(async function (one, two, three) {
 #### somiibo.getOS()
 - returns: <[Object]>
 
-The method returns the current user's operating system data as an object.
+This method returns the current user's operating system data as an object.
 
 Examples:
 ```js
