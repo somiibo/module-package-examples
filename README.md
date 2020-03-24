@@ -100,16 +100,24 @@ The `Somiibo` library is the first argument passed to the exported function, so 
 
 ### Flow
 #### somiibo.initialize(fn)
-- `fn` <[function]> A [function] to execute
+- `fn` <[function]\([Object]\)> A [function] to execute
+  - `defaults` <[Object]> A mutable object representing the defaults for every method
 
 - returns: <`null`>
 
-The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored.
+The method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored. `defaults` for each method can be overwritten here via `defaults[method][name] = 'new'`.
 
 Examples:
 ```js
-somiibo.initialize(() => {
+somiibo.initialize((defaults) => {
   somiibo.log('Hello, World! I only run once.');
+});
+```
+```js
+somiibo.initialize((defaults) => {
+  // Overwrite some defaults
+  defaults.loop.delay = 5000;
+  defaults.scroll.offsetY = 150;
 });
 ```
 
@@ -119,7 +127,7 @@ somiibo.initialize(() => {
 
 - returns: <`null`>
 
-`.loop()` drives the repeating nature of modules by executing the `fn` passed to it, effectively starting the moudule from the top again.
+`.loop()` drives the repeating nature of modules by executing the `fn` passed to it, effectively starting the module from the top again.
 
 Examples:
 ```js
