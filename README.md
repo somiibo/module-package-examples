@@ -641,6 +641,7 @@ As basic `settings.html` file looks something like this:
 ```html
 <settings>
   <form>
+    <!-- Put your form fields here -->
     <button type="submit" class="btn btn-lg btn-block btn-primary">Save settings</button>
   </form>
 </settings>
