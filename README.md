@@ -54,30 +54,6 @@ For each module in your package you need to have a folder for the assets that pe
 - **settings.js**: The logic of the settings interface. This script will be executed in a Node.js environment.
 - **settings.json**: The meta data for the settings fields including defaults, min, max, etc...
 
-## Using Your Package in Somiibo
-When you import a custom package into Somiibo, you can supply a local path or a URL.
-
-If you supply a local path, the package will be loaded directly from your computer while, conversely, if you supply a URL Somiibo will attempt to load the package from your remote server.
-
-1. Open the settings page in Somiibo by navigating to [somiibo://settings](somiibo://settings) or pressing <kbd>cmd</kbd>+<kbd>,</kbd> or <kbd>ctrl</kbd>+<kbd>,</kbd>.
-2. Select the **Module packages** tab.
-3. Click the plus button **(+)**.
-4. Enter the local file path or the remote URL that points to your package's `main.json`.
-5. Select **Add package** and you're done!
-
-You should now see your custom package added to the list of packages.
-
-## Publishing Your Package
-1. Commit/upload your package as a [repository](https://help.github.com/en/github/getting-started-with-github/create-a-repo) on GitHub.
-2. Open the repository settings by selecting the gear icon on the right.
-3. Scroll down until you see the **GitHub Pages** section. Change the first dropdown to **master branch**.
-
-Great! Now your module package is hosted for free on GitHub pages!
-
-Your remote URL will be something like `https://<username>.github.io/<repo>/main.json`.
-
-For example, this package is hosted on GitHub pages at this address: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json).
-
 ## Somiibo module.js API
 The `module.js` script is the actual logic behind a module. It exists in a separate context from the module webpage.
 
@@ -510,6 +486,24 @@ somiibo.alert({
 });
 ```
 
+## Somiibo settings.html API
+The `settings.html` API works in conjunction with `settings.js` and `settings.json` to deliver a customizable experience to the user.
+
+The `settings.html` file **must not** contain `html`, `head`, or `body` tags, as it will be inserted into an existing DOM. It also cannot contain any `script` tags, as that is what the `settings.js` is for.
+
+The `settings.html` file will automatically be styled by our custom implementation of [Bootstrap] so the use of Bootstrap classes is highly encouraged.
+
+### Skeleton file
+As basic `settings.html` file looks something like this:
+```html
+<settings>
+  <form>
+    <!-- Put your form fields here -->
+    <button type="submit" class="btn btn-lg btn-block btn-primary">Save settings</button>
+  </form>
+</settings>
+```
+
 ## Somiibo settings.js API
 The `settings.js` API works in conjunction with `settings.html` and `settings.json` to deliver a customizable experience to the user.
 
@@ -629,23 +623,30 @@ Examples:
 }
 ```
 
-## Somiibo settings.html API
-The `settings.html` API works in conjunction with `settings.js` and `settings.json` to deliver a customizable experience to the user.
+## Using Your Package in Somiibo
+When you import a custom package into Somiibo, you can supply a local path or a URL.
 
-The `settings.html` file **must not** contain `html`, `head`, or `body` tags, as it will be inserted into an existing DOM. It also cannot contain any `script` tags, as that is what the `settings.js` is for.
+If you supply a local path, the package will be loaded directly from your computer while, conversely, if you supply a URL Somiibo will attempt to load the package from your remote server.
 
-The `settings.html` file will automatically be styled by our custom implementation of [Bootstrap] so the use of Bootstrap classes is highly encouraged.
+1. Open the settings page in Somiibo by navigating to [somiibo://settings](somiibo://settings) or pressing <kbd>cmd</kbd>+<kbd>,</kbd> or <kbd>ctrl</kbd>+<kbd>,</kbd>.
+2. Select the **Module packages** tab.
+3. Click the plus button **(+)**.
+4. Enter the local file path or the remote URL that points to your package's `main.json`.
+5. Select **Add package** and you're done!
 
-### Skeleton file
-As basic `settings.html` file looks something like this:
-```html
-<settings>
-  <form>
-    <!-- Put your form fields here -->
-    <button type="submit" class="btn btn-lg btn-block btn-primary">Save settings</button>
-  </form>
-</settings>
-```
+You should now see your custom package added to the list of packages.
+
+## Publishing Your Package
+1. Commit/upload your package as a [repository](https://help.github.com/en/github/getting-started-with-github/create-a-repo) on GitHub.
+2. Open the repository settings by selecting the gear icon on the right.
+3. Scroll down until you see the **GitHub Pages** section. Change the first dropdown to **master branch**.
+
+Great! Now your module package is hosted for free on GitHub pages!
+
+Your remote URL will be something like `https://<username>.github.io/<repo>/main.json`.
+
+For example, this package is hosted on GitHub pages at this address: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json).
+
 
 [Bootstrap]: https://getbootstrap.com/ "Bootstrap 4"
 [JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON"
