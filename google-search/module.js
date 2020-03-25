@@ -21,9 +21,7 @@ async function main(mod) {
     // We also need to use the index property to tell it to select a specifc one
     // We can chain .scroll() and .click() to scroll to and then click the element, respectively
     // We supply an offsetY on .scroll() to compensate for the height of the nav bar on the page or else it might get stuck behind that
-    await somiibo.select('.srg a h3', {
-      index: settings.resultToClick
-    })
+    await somiibo.select('a h3')
     .then((r) => r.scroll(undefined, {offsetY: 150}))
     .then((r) => r.click())
 
