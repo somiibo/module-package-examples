@@ -20,7 +20,11 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/somiibo/module-package-examples.svg)
 
 # Somiibo
-**Somiibo** is a free platform to develop web automation scripts.
+**Somiibo** is a free platform to develop web automation scripts. The Somiibo API makes it extremely easy and efficient to write bots to automate any website and help complete repetitive tasks. The API automatically includes algorithms that emulate human-like behavior such as mouse movements and keyboard strokes.
+
+To get started, you simply need to download the free host software at [https://somiibo.com/download](https://somiibo.com/download).
+
+Happy automating!
 
 [Site](https://somiibo.com) | [NPM Module](https://www.npmjs.com/package/somiibo) | [GitHub Repo](https://github.com/somiibo/module-package-examples)
 
@@ -284,7 +288,7 @@ somiibo.log(somiibo.getURL());
 
 - returns: <[Promise]<[Object]>> - This method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
 
-This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()` and subsequent calls to `.select()` are *not necessary* for each of these methods since the currently selected element is stored until overwritten by another call of `.select()`.
 
 Note: Since the module webpage runs in a separate process, it is not possible to access the [ElementHandle] directly from `somiibo.property.select`. Instead, `somiibo.property.select` will contain a jQuery-like representation of the result.
 
@@ -341,6 +345,8 @@ await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
 - `options` <[Object]>
   - `offsetX` <?[number]> Offset scroll amount on x axis
   - `offsetY` <?[number]> Offset scroll amount on y axis
+  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
+
 
 - returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
 
@@ -363,6 +369,8 @@ await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
 - `options` <[Object]>
   - `offsetX` <?[number]> Offset click amount on x axis
   - `offsetY` <?[number]> Offset click amount on y axis
+  - `move` <?[boolean]> Whether to move the mouse to the position before the click event is fired
+  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
 
 - returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
 
