@@ -22,8 +22,8 @@ async function main(mod) {
     // We can chain .scroll() and .click() to scroll to and then click the element, respectively
     // We supply an offsetY on .scroll() to compensate for the height of the nav bar on the page or else it might get stuck behind that
     await somiibo.select('a h3')
-    .then((r) => r.scroll(undefined, {offsetY: 150}))
-    .then((r) => r.click())
+    .then(() => somiibo.scroll(undefined, {offsetY: 150}))
+    .then(() => somiibo.click())
 
     // Let's log this property so you can see what the returned selected element looks like
     // You can press cmd+option+i / ctrl+shift+i to open the dev tools
