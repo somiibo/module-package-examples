@@ -101,7 +101,7 @@ For each module in your package you need to have a folder for the assets that pe
 ## Somiibo module.js API
 The `module.js` script is the actual logic behind a module. It exists in a separate context from the module webpage.
 
-While on the module page within Somiibo, you can press <kbd>cmd</kbd>+<kbd>options</kbd>+<kbd>i</kbd> or <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>i</kbd> to open the developer tools.
+While on the module page within Somiibo, you can press <kbd>cmd</kbd>+<kbd>option</kbd>+<kbd>i</kbd> or <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>i</kbd> to open the developer tools.
 
 From within the `module.js` script you can `require` any core Node.js module as well as any of the supported 3rd party modules.
 
