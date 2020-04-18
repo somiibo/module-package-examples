@@ -26,7 +26,7 @@ To get started, you simply need to download the free host software at [https://s
 
 Happy automating!
 
-[Site](https://somiibo.com) | [NPM Module](https://www.npmjs.com/package/somiibo) | [GitHub Repo](https://github.com/somiibo/module-package-examples)
+[Site](https://somiibo.com) | [GitHub Repo](https://github.com/somiibo/module-package-examples)
 
 </div>
 
