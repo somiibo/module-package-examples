@@ -1,3 +1,4 @@
+
 <div align="center">
   <a href="https://somiibo.com">
     <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/somiibo-appicon-320x320.png?cb=1584692584">
@@ -68,7 +69,7 @@ This file contains meta data for the package as a whole, as well as the meta dat
 #### Fields
 - **id**: A uuid that uniquely identifies the package. You can generate one here: [https://www.uuidgenerator.net/](https://www.uuidgenerator.net/).
 - **title**: The title that is displayed on the module selection screen for this package.
-- **description**: The description of the package.
+- **description**: The description of the package. Markdown syntax for `**bold**` and `*italic*` is supported!
 - **author**: Your name.
 - **repository**: The repository git link. For example: [https://github.com/somiibo/module-package-examples.git](https://github.com/somiibo/module-package-examples.git).
 - **modules**: An array of meta data pertaining to each module in the package.
@@ -101,7 +102,7 @@ For each module in your package you need to have a folder for the assets that pe
 ## Somiibo module.js API
 The `module.js` script is the actual logic behind a module. It exists in a separate context from the module webpage.
 
-While on the module page within Somiibo, you can press <kbd>cmd</kbd>+<kbd>option</kbd>+<kbd>i</kbd> or <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>i</kbd> to open the developer tools.
+While on the module page within Somiibo, you can press <kbd>cmd</kbd>+<kbd>option</kbd>+<kbd>i</kbd> or <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>i</kbd> to open the DevTools which includes a console.
 
 From within the `module.js` script you can `require` any core Node.js module as well as any of the supported 3rd party modules.
 
@@ -117,14 +118,13 @@ module.exports = main;
 ```
 The `Somiibo` library is the first argument passed to the exported function, so as seen here, `mod` can be stored to a variable `somiibo` in the global scope so that it can be accessed throughout the rest of the module's lifecycle.
 
-### Flow
-#### somiibo.initialize(fn)
+#### Flow
+##### somiibo.initialize(fn)
 - `fn` <[function]\([Object]\)> A [function] to execute
   - `defaults` <[Object]> A mutable object representing the defaults for every method
-
 - returns: <`null`>
 
-This method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored. `defaults` for each method can be overwritten here via `defaults[method][name] = 'new'`.
+This method runs only once and, as such, it is an easy way to implement any configuration or setup that does not need to be executed multiple times. Any subsequent calls to `.initialize()` will be ignored. `defaults` for each method can be overwritten here via `defaults[library][method][name] = 'new'`.
 
 Examples:
 ```js
@@ -136,14 +136,13 @@ somiibo.initialize((defaults) => {
 somiibo.initialize((defaults) => {
   // Overwrite some defaults
   defaults.loop.delay = 5000;
-  defaults.scroll.offsetY = 150;
+  defaults.browser.scroll.offsetY = 150;
 });
 ```
 
-#### somiibo.loop(fn, delay)
+##### somiibo.loop(fn, delay)
 - `fn` <[function]> A [function] to execute
-- `delay` <?[number]> Number of milliseconds between calls
-
+- `delay` <?[number]> Number of milliseconds to wait before the script loops
 - returns: <`null`>
 
 `.loop()` drives the repeating nature of modules by executing the `fn` passed to it, effectively starting the module from the top again.
@@ -158,10 +157,10 @@ async function main(mod) {
 module.exports = main;
 ```
 
-#### somiibo.stop()
+##### somiibo.stop()
 - returns: <`null`>
 
-Stop module executing
+Stop module execution. Calling this is the same as if the user pressed the 'stop' button on the module manager page.
 
 Examples:
 ```js
@@ -173,12 +172,12 @@ async function main(mod) {
 module.exports = main;
 ```
 
-#### somiibo.wait(time, timeMax)
+##### somiibo.wait(time, timeMax)
 - `time` <[number]> Time in milliseconds to wait
 - `timeMax` <?[number]> Optional time to randomize the wait.
-- returns: <[Promise]<[number]>> - The promise resolves when the wait is over with the amount of milliseconds waited.
+- returns: <[Promise]<[number]>> The promise resolves when the wait is over with the amount of milliseconds waited.
 
-This method pauses execution of the script.
+This method pauses execution of the script for the amount of `time` specified in milliseconds.
 
 Examples:
 ```js
@@ -188,8 +187,8 @@ await somiibo.wait(5000); // Waits 5 seconds
 await somiibo.wait(5000, 10000); // Waits between 5 and 10 seconds
 ```
 
-### Settings
-#### somiibo.getSetting(path, def)
+#### Settings
+##### somiibo.getSetting(path, def)
 - `path` <[string]> Path to the settings key to retrieve
 - returns: <`any`>
 
@@ -197,24 +196,26 @@ Get the user's settings for this module. If `path` is not supplied, the entire s
 
 Examples:
 ```js
+// Gets one settings
 somiibo.log(somiibo.getSetting('mySettingName'));
 ```
 ```js
+// Gets all settings as an object
 somiibo.log(somiibo.getSetting());
 ```
 
-### Development and debugging
-#### somiibo.log([, ...args])
+#### Development and debugging
+##### somiibo.log([, ...args])
 - `...args` <...[Serializable]> Arguments to pass to the console
 - returns: <`null`>
 
-Executes `console.log` in the module's developer console.
+Executes `console.log` in the module's DevTools console.
 
 Examples:
 ```js
 somiibo.log('Hello, World!');
 ```
-#### somiibo.openDevTools()
+##### somiibo.openDevTools()
 - returns: <`null`>
 
 Opens the module's dev tools.
@@ -224,236 +225,8 @@ Examples:
 somiibo.openDevTools();
 ```
 
-### Navigation
-#### somiibo.navigate(url, options)
-- `url` <[string]> A URL to navigate to
-- `options` <?[Object]>
-  - `referrer` <?[string]> An HTTP Referrer URL
-  - `userAgent` <?[string]> A user agent originating the request
-- returns: <[Promise]<`null`>> - The promise resolves when the page finishes loading
-
-Navigates the module webpage.
-
-Examples:
-```js
-somiibo.navigate('https://google.com');
-```
-```js
-somiibo.navigate('https://google.com', {
-  referrer: 'https://reddit.com',
-  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-});
-```
-
-#### somiibo.navigateBack()
-- returns: <[Promise]> - the promise resolves when the page finishes loading
-
-Navigates the module webpage backwards as if the user pressed the back button.
-
-Examples:
-```js
-somiibo.navigateBack();
-```
-
-#### somiibo.navigateForward()
-- returns: <[Promise]> - the promise resolves when the page finishes loading
-
-Navigates the module webpage forwards as if the user pressed the forward button.
-
-Examples:
-```js
-somiibo.navigateForward();
-```
-
-#### somiibo.getURL()
-- returns: <[string]>
-
-Returns the webpages current URL.
-
-Examples:
-```js
-somiibo.log(somiibo.getURL());
-```
-
-### Selecting and performing actions on a webpage
-#### somiibo.select(selector, options)
-- `selector` <[string]> A [selector] to query page for
-- `options` <[Object]>
-  - `index` <?[number], [string]> Index of the element array to return
-  - `filters` <?[Array]<[Object]>> An array of filter objects that narrow down the returned array
-  - `retrieve` <?[Array]<[string]>> An array of attributes or element properties to include in the returned array
-  - `wait` <?[number]> A maximum number of milliseconds to wait as the selector is periodically polled
-
-- returns: <[Promise]<[Object]>> - This method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
-
-This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()` and subsequent calls to `.select()` are *not necessary* for each of these methods since the currently selected element is stored until overwritten by another call of `.select()`.
-
-Note: Since the module webpage runs in a separate process, it is not possible to access the [ElementHandle] directly from `somiibo.property.select`. Instead, `somiibo.property.select` will contain a jQuery-like representation of the result.
-
-Examples:
-```js
-const elements1 = await somiibo.select('a');
-```
-```js
-const elements2 = await somiibo.select('a', {
-  filters: [
-    { splice: [0, 10] },
-    { match: { innerText: /my text/i } },
-    { match: { innerHTML: /<span>hello<\/span>/i } },
-  ],
-  index: 3, // can also supply '$random'
-  retrieve: ['href'],
-  wait: 30000,
-});
-```
-```js
-const elements3 = await somiibo.select('a') // select the element
-  .then(() => somiibo.scroll(undefined, {offsetY: 100})) // scroll to it
-  .then(() => somiibo.click()); // then click it
-```
-
-#### somiibo.scroll(position, options)
-- `position` <?[string], [Object]> Position or element on page to scroll to
-- `options` <[Object]>
-  - `offsetX` <?[number]> Offset scroll amount on x axis
-  - `offsetY` <?[number]> Offset scroll amount on y axis
-
-- returns: <[Promise]<[Object]>> - This method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation) and returns the result of the scroll.
-
-This method scrolls the page based on the current position of the mouse and stores the result in `somiibo.property.scroll`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
-
-If `position` is `undefined` or `$selected`, the method will try to scroll to the currently selected element.
-
-`offsetX` and `offsetY` are absolutely necessary if there are fixed navs or footers on the page or else the element being scrolled to might get stuck under the nav/footer.
-
-Examples:
-```js
-await somiibo.scroll({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
-```
-```js
-await somiibo.select('a')
-  .then(() => somiibo.scroll(undefined, {offsetY: 100}));
-```
-```js
-await somiibo.scroll('$selected', {offsetX: 50, offsetY: -50});
-```
-
-#### somiibo.move(position, options)
-- `position` <?[string], [Object]> Position or element on page to move the mouse to
-- `options` <[Object]>
-  - `offsetX` <?[number]> Offset scroll amount on x axis
-  - `offsetY` <?[number]> Offset scroll amount on y axis
-  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
-
-
-- returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
-
-This method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
-
-Examples:
-```js
-await somiibo.move({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
-```
-```js
-await somiibo.select('a')
-  .then(() => somiibo.move(undefined, {offsetY: 100}));
-```
-```js
-await somiibo.move('$selected', {offsetX: 50, offsetY: -50});
-```
-
-#### somiibo.click(position, options)
-- `position` <?[string], [Object]> Position or element on page to move the mouse to
-- `options` <[Object]>
-  - `offsetX` <?[number]> Offset click amount on x axis
-  - `offsetY` <?[number]> Offset click amount on y axis
-  - `move` <?[boolean]> Whether to move the mouse to the position before the click event is fired
-  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
-
-- returns: <[Promise]<[Object]>> - This method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
-
-This method moves the mouse to a position or element and stores the result in `somiibo.property.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
-
-If `position` is `undefined` or `$selected`, the method will try to click on the currently selected element.
-
-Examples:
-```js
-await somiibo.click({x: 100, y: 100});
-```
-```js
-await somiibo.select('a')
-  .then(() => somiibo.click());
-```
-```js
-await somiibo.click('$selected');
-```
-
-#### somiibo.type(input, options)
-- `input` <[Array]<[string]>> An array of strings to type
-- `options` <[Object]>
-  - `delayMin` <?[number]> Minimum delay between keystrokes
-  - `delayMax` <?[number]> Maximum delay between keystrokes
-
-- returns: <[Promise]<[Object]>> - This method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation) and returns the result of the keyboad type.
-
-This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.property.type`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
-
-Special keys such as `Enter` must be **in their own array element**:
-```js
-['Space', 'Tab', 'Backspace', 'Delete', 'Up', 'Down', 'Left', 'Right', 'Escape', 'Enter']
-```
-
-Examples:
-```js
-await somiibo.type(['Hello, World!']);
-```
-```js
-await somiibo.type(['Hello, World!', 'Enter']);
-```
-```js
-await somiibo.type(['Hello, World!'], {delayMin: 90, delayMax: 140});
-```
-
-#### somiibo.getVariable(path, compare, options)
-- `path` <[string]> Path to the variable
-- `compare` <?[function]> Function to compare the result of the variable
-- `options` <[Object]>
-  - `wait` <?[number]> A maximum number of milliseconds to wait as the variable is periodically polled
-
-- returns: <[Promise]<`any`>> - This method resolves when the variable is retrieved an either matches the compare function or times out.
-
-Get and return a variable from within the webpage. Only global scoped variables are acessible.
-
-Examples:
-```js
-await somiibo.getVariable('myVariable');
-```
-```js
-await somiibo.getVariable('my.variable.is.nested');
-```
-```js
-await somiibo.getVariable('myVariable', function (value) {
-  return typeof value !== 'undefined';
-}, {wait: 10000})
-```
-
-#### somiibo.execute(fn, options)
-- `fn` <?[string]> Function as a string to execute within the module webpage
-- `options` <[Object]>
-  - `trusted` <?[boolean]> Whether the code should be executed as a user gesture
-
-- returns: <[Promise]<`any`>> - A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
-
-This method executes a function in the context of the module webpage. In the browser window some HTML APIs like `requestFullScreen` can only be invoked by a gesture from the user. Setting `userGesture` to `true` will remove this limitation.
-
-Examples:
-```js
-await somiibo.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', true)
-  .then((result) => { console.log(result) })
-```
-
-### Workers
-#### somiibo.worker(fn, options)
+#### Workers
+##### somiibo.worker(fn, options)
 - `fn` <[function]> Function to be passed to the worker process
 - `options` <[Object]>
   - `arguments` <?[Array]> Arguments to be passed to the worker script
@@ -467,7 +240,7 @@ await somiibo.executeJavaScript('fetch("https://jsonplaceholder.typicode.com/use
 
 - returns: <[Promise]<[Object]>> - This method resolves when the worker launches. The resolve will always happen before the worker times out.
 
-This method launches a worker process--an isolated webpage that acts like an iframe--within the module webpage. Workers are useful for bulk tasks.
+This method launches a worker process--an isolated subpage--within the module webpage. Workers are useful for bulk tasks.
 
 Note: Currently, launching a worker requires a page navigation to a custom inner page prior to execution. This process happens automatically. For workers to be enabled on a module, the `main.json` module properties must contain `webview: true`.
 
@@ -490,39 +263,8 @@ await somiibo.worker(async function (one, two, three) {
 });
 ```
 
-### Miscellaneous methods
-#### somiibo.getOS()
-- returns: <[Object]>
-
-This method returns the current user's operating system data as an object.
-
-Examples:
-```js
-somiibo.log(somiibo.getOS());
-```
-```js
-{
-  platform: 'win32',
-  name: 'windows',
-  version: '10.0.17763',
-}
-```
-```js
-{
-  platform: 'darwin',
-  name: 'mac',
-  version: '10.15.4',
-}
-```
-```js
-{
-  platform: 'linux',
-  name: 'mac',
-  version: '10.15.4',
-}
-```
-
-#### somiibo.alert(options)
+#### Miscellaneous methods
+##### somiibo.alert(options)
 - `options` <[Object]>
   - `type` <?[string]> Type of the alert
   - `title` <?[string]> Title of the alert
@@ -538,8 +280,466 @@ somiibo.alert({
   type: 'success', // 'success', 'warning', 'danger', 'info',
   title: 'Hello, World!',
   content: '<h1>Greetings</h1> <br> This is my message.',
-  button: 'Goodbye',
+  button: 'Goodbye'
 });
+```
+
+#### Events
+##### event: 'error'
+- `event` <[Event]>
+- `error` <[Error]>
+- `meta` <[Object]> Includes information about the error
+  - `navigation` <[boolean]> Whether or not the error was due to navigation
+
+Emitted when the module.js script encounters a fatal error. The default behavior is to stop the module and display an error to the user but this can be prevented with `event.preventDefault()`. Usually (but not always), navigation errors can be recovered from and calling `event.preventDefault()` is advised.
+
+Examples:
+```js
+somiibo.on('error', (event, error, meta) => {
+  somiibo.log('Oops! There was an error', error, meta);
+
+  // If it was a navigation error, we can probably continue safely
+  if (meta.navigation) {
+    // Calling event.preventDefault() will prevent the module from stopping
+    event.preventDefault();
+  }
+});
+```
+
+##### event: 'new-worker'
+- `event` <[Event]>
+- `payload` <[Object]> Includes information on the success or failure to setup the worker
+
+Emitted when a worker completes its setup phase.
+
+Examples:
+```js
+somiibo.on('new-worker', (event, payload) => {
+  somiibo.log('A worker has been set up!', payload);
+});
+```
+
+### somiibo.browser() methods
+This API is responsible for navigating and interacting with the single browser window that each module gets.
+
+#### Navigation
+##### somiibo.browser().navigate(url, options)
+- `url` <[string]> A URL to navigate to
+- `options` <?[Object]>
+  - `referrer` <?[string]> An HTTP Referrer URL
+  - `userAgent` <?[string]> A user agent originating the request
+- returns: <[Promise]<`null`>> The promise resolves when the page finishes loading
+
+Navigates the module webpage.
+
+Examples:
+```js
+await somiibo.browser().navigate('https://google.com');
+```
+```js
+await somiibo.browser().navigate('https://google.com', {
+  referrer: 'https://reddit.com',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+});
+```
+
+##### somiibo.browser().navigateBack()
+- returns: <[Promise]> - the promise resolves when the page finishes loading
+
+Navigates the module webpage backwards as if the user pressed the back button.
+
+Examples:
+```js
+await somiibo.browser().navigateBack();
+```
+
+##### somiibo.browser().navigateForward()
+- returns: <[Promise]> - the promise resolves when the page finishes loading
+
+Navigates the module webpage forwards as if the user pressed the forward button.
+
+Examples:
+```js
+await somiibo.browser().navigateForward();
+```
+
+##### somiibo.browser().getURL()
+- returns: <[string]>
+
+Returns the webpages current URL.
+
+Examples:
+```js
+somiibo.log(somiibo.browser().getURL());
+```
+
+
+#### Selecting and performing actions on a webpage
+##### somiibo.browser().select(selector, options)
+- `selector` <[string]> A [selector] to query page for
+- `options` <[Object]>
+  - `index` <?[number], [string]> Index of the element array to return
+  - `filters` <?[Array]<[Object]>> An array of filter objects that narrow down the returned array
+  - `retrieve` <?[Array]<[string]>> An array of attributes or element properties to include in the returned array
+  - `wait` <?[number]> A maximum number of milliseconds to wait as the selector is periodically polled
+- returns: <[Promise]<[Object]>> This method resolves when the element is found or determined to not exist and returns a jQuery-like representation of the selected elements.
+
+This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.browser().properties.select`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()` and subsequent calls to `.select()` are *not necessary* for each of these methods since the currently selected element is stored until overwritten by another call of `.select()`.
+
+Note: Since the module webpage runs in a separate process, it is not possible to access the [ElementHandle] directly from `somiibo.browser().properties.select`. Instead, `somiibo.browser().properties.select` will contain a jQuery-like representation of the result.
+
+Examples:
+```js
+const elements1 = await somiibo.browser().select('a');
+```
+```js
+const elements2 = await somiibo.browser().select('a', {
+  filters: [
+    { splice: [0, 10] },
+    { match: { innerText: /my text/i } },
+    { match: { innerHTML: /<span>hello<\/span>/i } },
+  ],
+  index: 3, // can also supply '$random'
+  retrieve: ['href'],
+  wait: 30000,
+});
+```
+```js
+const elements3 = await somiibo.browser().select('a') // select the element
+  .then(() => somiibo.browser().scroll(undefined, {offsetY: 100})) // scroll to it
+  .then(() => somiibo.browser().click()); // then click it
+```
+
+##### somiibo.browser().scroll(position, options)
+- `position` <?[string], [Object]> Position or element on page to scroll to
+- `options` <[Object]>
+  - `offsetX` <?[number]> Offset scroll amount on x axis
+  - `offsetY` <?[number]> Offset scroll amount on y axis
+- returns: <[Promise]<[Object]>> This method resolves when the in-page scroll completes or when page navigation completes (if the scroll triggers a navigation) and returns the result of the scroll.
+
+This method scrolls the page based on the current position of the mouse and stores the result in `somiibo.browser().properties.scroll`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+
+If `position` is `undefined` or `somiibo.browser().$selected`, the method will try to scroll to the currently selected element.
+
+`offsetX` and `offsetY` are absolutely necessary if there are fixed navs or footers on the page or else the element being scrolled to might get stuck under the nav/footer.
+
+Examples:
+```js
+await somiibo.browser().scroll({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
+```
+```js
+await somiibo.browser().select('a')
+  .then(() => somiibo.scroll(somiibo.browser().$selected, {offsetY: 100}));
+```
+```js
+await somiibo.browser().scroll(somiibo.browser().$selected, {offsetX: 50, offsetY: -50});
+```
+
+##### somiibo.browser().move(position, options)
+- `position` <?[string], [Object]> Position or element on page to move the mouse to
+- `options` <[Object]>
+  - `offsetX` <?[number]> Offset scroll amount on x axis
+  - `offsetY` <?[number]> Offset scroll amount on y axis
+  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
+- returns: <[Promise]<[Object]>> This method resolves when the in-page mouse movement is complete or when page navigation completes (if the mouse movement triggers a navigation) and returns the result of the mouse movement.
+
+This method moves the mouse to a position or element and stores the result in `somiibo.browser().properties.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+
+Examples:
+```js
+await somiibo.browser().move({x: 100, y: 100}, {offsetX: 50, offsetY: -50});
+```
+```js
+await somiibo.browser().select('a')
+  .then(() => somiibo.browser().move(somiibo.browser().$selected, {offsetY: 100}));
+```
+```js
+await somiibo.browser().move(somiibo.browser().$selected, {offsetX: 50, offsetY: -50});
+```
+
+##### somiibo.browser().click(position, options)
+- `position` <?[string], [Object]> Position or element on page to move the mouse to
+- `options` <[Object]>
+  - `offsetX` <?[number]> Offset click amount on x axis
+  - `offsetY` <?[number]> Offset click amount on y axis
+  - `move` <?[boolean]> Whether to move the mouse to the position before the click event is fired
+  - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
+- returns: <[Promise]<[Object]>> This method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
+
+This method moves the mouse to a position or element and stores the result in `somiibo.browser().properties.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+
+If `position` is `undefined` or `$selected`, the method will try to click on the currently selected element.
+
+Examples:
+```js
+await somiibo.browser().click({x: 100, y: 100});
+```
+```js
+await somiibo.browser().select('a')
+  .then(() => somiibo.browser().click());
+```
+```js
+await somiibo.browser().click(somiibo.browser().$selected);
+```
+
+##### somiibo.browser().type(input, options)
+- `input` <[Array]<[string]>> An array of strings to type
+- `options` <[Object]>
+  - `delayMin` <?[number]> Minimum delay between keystrokes
+  - `delayMax` <?[number]> Maximum delay between keystrokes
+- returns: <[Promise]<[Object]>> This method resolves when the in-page typed string is complete or when page navigation completes (if the typed string triggers a navigation) and returns the result of the keyboad type.
+
+This method runs `document.querySelectorAll` within the page and stores the result in `somiibo.browser().properties.type`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
+
+Special keys such as `Enter` must be **in their own array element**:
+```js
+['Space', 'Tab', 'Backspace', 'Delete', 'Up', 'Down', 'Left', 'Right', 'Escape', 'Enter']
+```
+
+Examples:
+```js
+await somiibo.browser().type(['Hello, World!']);
+```
+```js
+await somiibo.browser().type(['Hello, World!', 'Enter']);
+```
+```js
+await somiibo.browser().type(['Hello, World!'], {delayMin: 90, delayMax: 140});
+```
+
+##### somiibo.browser().getVariable(path, compare, options)
+- `path` <[string]> Path to the variable
+- `compare` <?[function]> Function to compare the result of the variable
+- `options` <[Object]>
+  - `wait` <?[number]> A maximum number of milliseconds to wait for as the variable is periodically polled.
+- returns: <[Promise]<`any`>> This method resolves when the variable is retrieved and either matches the compare function or times out.
+
+Get and return a variable from within the webpage. Only global scoped variables are acessible. The variable polling will continue until the `compare` function returns `true` or a maximum amount of `wait` time elapses.
+
+Examples:
+```js
+await somiibo.browser().getVariable('myVariable');
+```
+```js
+await somiibo.browser().getVariable('my.variable.is.nested');
+```
+```js
+// Continue polling for myVariable for a maximum of 10 seconds
+await somiibo.browser().getVariable('myVariable', function (value) {
+  return typeof value !== 'undefined';
+}, {wait: 10000})
+```
+
+##### somiibo.browser().execute(fn, options)
+- `fn` <?[string]> Function as a string to execute within the module webpage
+- `options` <[Object]>
+  - `trusted` <?[boolean]> Whether the code should be executed as a user gesture
+- returns: <[Promise]<`any`>> A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
+
+This method executes a function in the context of the module webpage. In the browser window some HTML APIs like `requestFullScreen` can only be invoked by a gesture from the user. Setting `trusted` to `true` will remove this limitation.
+
+Examples:
+```js
+await somiibo.browser().executeJavaScript('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', {trusted: true})
+  .then((result) => { console.log(result) })
+```
+
+
+#### Browser Events
+##### event: 'new-window'
+- `event` <[Event]>
+- `window` <[Class]>
+  - `.setVisibility(state, options)`
+    - `state` <[string]> Visibility state of the window which can be `hide` or `show`
+    - `options` <?[Object]> Options for the visibility function
+      - `inactive` <?[boolean]> Activity state of the window which can be `true` or `false` where `true` will **not** focus the window
+  - `.setAudioMuted(state)`
+    - `state` <[boolean]> Audibility state of the window which can be `true` or `false`
+  - `.setFocusable(state)`
+    - `state` <[boolean]> Controls the user's ability to focus the window which can be `true` or `false`
+  - `.setAlwaysOnTop(state)`
+    - `state` <[boolean]> Controls the windows position on top of other windows which can be `true` or `false`
+  - `.navigate(url)`
+    - `url` <[string]> URL to navigate to
+    - Note: This operation is `asynchronous` and must be `await`ed
+  - `.getURL()` Return the current URL of the window
+  - `.openDevTools()` Open the DevTools of the window
+  - `.setScript(script, options)`
+    - `script` <[function]> Script that will be executed on every navigation of the window
+    - `options` <[Object]> Options for the script
+      - `arguments` <[Array]> An array of arguments that are passed to the `script`
+    - Note: The script has full access to the DOM and window since it is executed directly on the page.
+  - `.close()` Close the window
+
+Emitted when the module browser window receives a request to open a new window. The default behavior is to open the new window but the window will be hidden, unfocused, and muted.
+
+Examples:
+```js
+somiibo.browser().on('new-window', async (event, window) => {
+  // At this point, the window is open but hidden, unfocused, and muted
+
+  // We can navigate the window if we want
+  await window.navigate('https://google.com');
+
+  // We can show the window
+  window.setVisibility(true, {inactive: true});
+
+  // We can unmute the window
+  window.setAudioMuted(false);
+
+  // We can open the DevTools
+  window.openDevTools(false);
+
+  // Finally, we can close the window after 10 seconds
+  somiibo.setTimeout(function () {
+    window.close();
+  }, 10000)
+});
+```
+If you do not expect your module to open windows, you should listen for this event and call `window.close()` immediately.
+
+
+### .device() methods
+##### somiibo.device().getOS()
+- returns: <[Object]>
+
+Returns the current user's operating system data as an object.
+
+Examples:
+```js
+somiibo.log(somiibo.device().getOS());
+```
+```js
+// Example output for Windows
+{
+  platform: 'win32',
+  name: 'windows',
+  version: '10.0.17763',
+}
+
+// Example output for Mac
+{
+  platform: 'darwin',
+  name: 'mac',
+  version: '10.15.4',
+}
+
+// Example output for Linux
+{
+  platform: 'linux',
+  name: 'linux',
+  version: '10.15.4',
+}
+```
+
+### .tabs() methods
+##### somiibo.tabs().query(fn)
+- `fn` <?[Function]> Function that is called on tab object with `tab` and `index`
+  - Returns
+  - `tab` <?[Object]> An **read-only** object representing the tab
+    - `id` <?[number]> The ID of the tab
+    - `active` <?[boolean]> Boolean representing if the tab has focus
+    - `url` <?[string]> The url of the tab
+    - `type` <?[string]> Type of the tabs (`module` or `browser`)
+    - `module` <?[Object]> Object representing the module if type is `module`
+      - `moduleId` <?[string]> The ID of the module from the module's package
+      - `packageId` <?[string]> The ID of the package
+      - `properties` <?[Object]> An object of module properties
+      - `running` <?[Boolean]> The run state of the module
+      - `settings` <?[Object]> Object representing the module's settings
+      - `webContentsId` <?[number]> The webContents ID
+    - `session` <?[string]> The Session ID of the tab
+    - `partition` <?[string]> The Session partition of the tab
+    - `userAgent` <?[string]> The userAgent string of the tab
+  - `index` <?[number]> The index of the loop
+- returns: <[Array]> of tabs matching the query filter
+
+Iterates through all opened tabs returns an array of tabs matching the filter `fn`. Return `true` inside the `fn` to include the tab in the result.
+
+Examples:
+```js
+const allTabs = somiibo.tabs().query((tab, index) => true)
+
+const someTabs = somiibo.tabs().query((tab, index) => {
+  return tab.url.includes('https://google.com');
+})
+
+const runningModules = somiibo.tabs().query((tab, index) => {
+  return tab.type === 'module' && tab.module.running;
+})
+```
+
+##### somiibo.tabs().add(options)
+- `options` <?[Object]> Options for the new tab
+  - `url` <?[string]> The URL of the new tab
+  - `session` <?[string]> The Session ID of the new tab
+- returns: <[Promise]<[Object]>> The promise resolves when the tab is opened and passes the new tab object.
+
+Opens a new tab with the `options`. In the future, this method will be able to open tabs with the `module` type. You can get the `session` ID of a Session from [somiibo://settings](https://app.somiibo.com/?url=somiibo://settings) in the Sessions panel.
+
+Examples:
+```js
+await somiibo.tabs().add({
+  url: 'https://somiibo.com',
+  session: 'default',
+})
+.then(tab => {
+  somiibo.log('New tab opened', tab);
+})
+```
+
+##### somiibo.tabs().close(id)
+- `id` <?[Number]> ID of the tab to close
+- returns: <[Promise]<[null]>> The promise resolves when the tab is closed.
+
+Closes a tab with the `id`.
+
+Examples:
+```js
+await somiibo.tabs().close(69);
+```
+
+##### somiibo.tabs().navigate(id, url, options)
+- `id` <[number]> The id of the tab to navigate
+- `url` <[string]> A URL to navigate to
+- `options` <?[Object]>
+  - `referrer` <?[string]> An HTTP Referrer URL
+  - `userAgent` <?[string]> A user agent originating the request
+- returns: <[Promise]<`null`>> The promise resolves when the page finishes loading
+
+Navigates the tab webpage.
+
+Examples:
+```js
+await somiibo.tabs().navigate('https://google.com');
+```
+```js
+await somiibo.tabs().navigate('https://google.com', {
+  referrer: 'https://reddit.com',
+  userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+});
+```
+
+##### somiibo.tabs().start(id)
+- `id` <[number]> The id of the tab to start
+- returns: <[Promise]<`null`>> The promise resolves when the module finishes starting
+
+Starts the tab's module. At the moment, you can only use this method to start a manually opened module.
+
+Examples:
+```js
+await somiibo.tabs().start(69);
+```
+
+##### somiibo.tabs().stop(id)
+- `id` <[number]> The id of the tab to stop
+- returns: <[Promise]<`null`>> The promise resolves when the module finishes stopping
+
+Stops the tab's module. At the moment, you can only use this method to stop a manually opened module.
+
+Examples:
+```js
+await somiibo.tabs().stop(69);
 ```
 
 ## Somiibo settings.html API
@@ -575,8 +775,9 @@ module.exports = main;
 ```
 The `Settings` library is the first argument passed to the exported function, so as seen here, `settings` is used to access the API.
 
-### Events
-#### event: 'change'
+#### Events
+##### event: 'change'
+- `event` <[Event]>
 - `name` <[string]> The name of the field
 - `value` <[any]> The value of the field
 - `target` <[ElementHandle]> The element that the edit occurred on
@@ -593,7 +794,8 @@ async function main(settings) {
 module.exports = main;
 ```
 
-#### event: 'submit'
+##### event: 'submit'
+- `event` <[Event]>
 - `data` <[Object]> The user's settings serialized into a JSON object
 
 Emitted when the settings are saved by the user. Any changes made to the `data` object will overwrite the user's settings.
@@ -602,6 +804,8 @@ Examples:
 ```js
 async function main(settings) {
   settings.on('submit', function (data) {
+    // Here it is possible to modify the data before it is saved
+    data.mySetting = 'new value';
     console.log('submit event:', data);
   })
 }
@@ -615,7 +819,7 @@ async function main(settings) {
   settings.on('submit', function (data) {
     return {
       error: new Error('This field has an error!'),
-      input: 'fieldName' // Supplying the name of the setting will automatically highlight it for the user
+      input: 'fieldName' // Supplying the name of a setting will automatically highlight it for the user
     }
   })
 }
@@ -638,7 +842,7 @@ As basic `settings.json` module looks something like this:
 ```
 Only the settings that are included in this file are passed to the `module.js` script.
 
-#### Settings.json Fields
+##### Settings.json Fields
 - `name` <[string]> The name of the settings field
 - `default` <?[any]> The default value of the field
 - `required` <?[boolean]> Determines if the field is required
@@ -679,10 +883,10 @@ Examples:
 }
 ```
 
-## Publishing Your Package
+## Publishing Your Package for Free
 1. Commit/upload your package as a [repository](https://help.github.com/en/github/getting-started-with-github/create-a-repo) on GitHub.
-2. Open the repository settings by selecting the gear icon on the right.
-3. Scroll down until you see the **GitHub Pages** section. Change the first dropdown to **master branch**.
+2. Open the repository settings by selecting the **gear** icon on the right.
+3. Scroll down until you see the **GitHub Pages** section. Change the first dropdown to **master branch** to enable hosting.
 
 Great! Now your module package is hosted for free on GitHub pages!
 
@@ -690,6 +894,14 @@ Your remote URL will be something like `https://<username>.github.io/<repo>/main
 
 For example, this package is hosted on GitHub pages at this address: [https://somiibo.github.io/module-package-examples/main.json](https://somiibo.github.io/module-package-examples/main.json).
 
+You can put this URL directly into the package manager inside Somiibo!
+
+## Tips and Tricks
+Building any sort of automation process can be rewarding but also frustrating. Remember, computers are dumb and they only become smart when **you** make them smart. That being said, here's a few things to remember:
+* **Don't rely on something happening the same way every time**. Sometimes things don't load fast enough, sometimes there are network dropouts, and sometimes things just randomly don't work right.
+* **Build recursive checks into your modules**. Similar to the above, sometimes things aren't always what they seem and you need to check a few different angles before making a conclusion.
+* **Good modules take a long time to build**. If you're fast, you might be able to hammer out a module in a day or two. But to get it working flawlessly for long periods of time you can expect development to take *weeks* or even *months* to get right. Don't get discouraged!
+* **Our development channel on Discord is a lifesaver**. If all else fails, you can [join our Discord server](https://somiibo.com/discord) and find the channel called **#development**. Developers like you ask and answer questions all the time here!
 
 [Bootstrap]: https://getbootstrap.com/ "Bootstrap 4"
 [JSON]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON"
@@ -701,6 +913,9 @@ For example, this package is hosted on GitHub pages at this address: [https://so
 [Object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object "Object"
 [Array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array "Array"
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise "Promise"
+[Event]: https://nodejs.org/api/events.html "Event"
+[Class]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes "Class"
+[Error]: https://nodejs.org/api/errors.html "Error"
 [selector]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors "selector"
 [ElementHandle]: #class-elementhandle "ElementHandle"
 [Serializable]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#Description "Serializable"
