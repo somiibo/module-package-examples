@@ -540,7 +540,7 @@ This method executes a function in the context of the module webpage. In the bro
 
 Examples:
 ```js
-await somiibo.browser().executeJavaScript('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', {trusted: true})
+await somiibo.browser().execute('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', {trusted: true})
   .then((result) => { console.log(result) })
 ```
 
