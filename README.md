@@ -172,12 +172,28 @@ async function main(mod) {
 module.exports = main;
 ```
 
-##### somiibo.wait(time, timeMax)
-- `time` <[number]> Time in milliseconds to wait
-- `timeMax` <?[number]> Optional time to randomize the wait.
+##### somiibo.error(reason)
+- `reason` <[Error]>
+- returns: <[Error]>
+
+Stop module execution and displays an error message with `reason`.
+
+Examples:
+```js
+let somiibo:
+async function main(mod) {
+  somiibo = mod;
+  somiibo.error(new Error('Oops!'));
+}
+module.exports = main;
+```
+
+##### somiibo.wait(minTime, maxTime)
+- `minTime` <[number]> Time in milliseconds to wait
+- `maxTime` <?[number]> Optional time to randomize the wait.
 - returns: <[Promise]<[number]>> The promise resolves when the wait is over with the amount of milliseconds waited.
 
-This method pauses execution of the script for the amount of `time` specified in milliseconds.
+This method pauses execution of the script for the amount of `minTime` specified in milliseconds. If `maxTime` is also supplied, a random duration between the two is waited.
 
 Examples:
 ```js
@@ -238,7 +254,7 @@ somiibo.openDevTools();
   - `width` <?[number]> The width of the worker window
   - `height` <?[number]> The height of the worker window
 
-- returns: <[Promise]<[Object]>> - This method resolves when the worker launches. The resolve will always happen before the worker times out.
+- returns: <[Promise]<[Object]>> - This method resolves when the worker launches successfully. The resolve will always happen before the worker times out.
 
 This method launches a worker process--an isolated subpage--within the module webpage. Workers are useful for bulk tasks.
 
@@ -248,9 +264,7 @@ Examples:
 ```js
 await somiibo.worker(async function (one, two, three) {
   let _ = require('lodash');
-  console.log('Arg one', one);
-  console.log('Arg two', two);
-  console.log('Arg three', three);
+  console.log('Args', one, two, three);
   console.log('lodash', _.get(three, 'key'));
   console.log(window.location.href);
 }, {
@@ -531,17 +545,61 @@ await somiibo.browser().getVariable('myVariable', function (value) {
 ```
 
 ##### somiibo.browser().execute(fn, options)
-- `fn` <?[string]> Function as a string to execute within the module webpage
-- `options` <[Object]>
-  - `trusted` <?[boolean]> Whether the code should be executed as a user gesture
-- returns: <[Promise]<`any`>> A promise that resolves with the result of the executed code or is rejected if the result of the code is a rejected promise.
+- `fn` <[function]> Function as a string to execute within the module webpage
+- `options` <?[Object]>
+  - `arguments` <?[Array]> Arguments to be passed to the script
+  <!-- - `trusted` <?[boolean]> Whether the code should be executed as a user gesture -->
+- returns: <[Promise]<[Object]>> A promise that resolves with an object with keys
+  - `success` <[boolean]> `true` if the script executed successfully or `false`
+  - `result` <`any`> result returned from the `fn` or an [Error] message
 
-This method executes a function in the context of the module webpage. In the browser window some HTML APIs like `requestFullScreen` can only be invoked by a gesture from the user. Setting `trusted` to `true` will remove this limitation.
+This method executes a function in the context of the module webpage
 
 Examples:
 ```js
-await somiibo.browser().execute('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', {trusted: true})
-  .then((result) => { console.log(result) })
+await somiibo.browser().execute(async function (one, two, three) {
+  console.log('This is execute inside the page so it has access to the window and document', window, document);
+  console.log('Arguments', one, two, three);
+  await fetch('https://httpbin.org/delay/5');
+  return 'Waited 5 seconds';
+}, {
+  arguments: [1, 1 + 1, 'three']
+})
+.then((result) => {
+  somiibo.log(result); // Should log: {success: true, result: 'Waited 5 seconds'}
+})
+```
+
+##### somiibo.browser().solveCaptcha(options)
+- `options` <?[Object]>
+  - `auto` <?[boolean]> Whether the captcha should be automatically detected and solved. Defaults to `true`
+  - `mode` <?[string]> The type of captcha to solve (currently `reCaptchaV2` & `hCaptcha` are supported)
+  - `service` <?[string]> The service to use (currently `2Captcha` & `antiCaptcha` are supported)
+  - `sitekey` <?[string]> The sitekey of the site with the captcha
+- returns: <[Promise]<[Object]>> A promise that is rejected with an [Error] if the captcha fails or resolves with an object with keys:
+  - `result` <[string>] The result of the captcha solve
+
+This method can detect and solve a captcha on the module webpage. When `auto` is `true`, the API will attempt to determine `mode` & `sitekey` automatically but it is better to supply them if the captcha mode is known. `service` will automatically be set to whatever the **user** has chosen in their preferences but it can be overrriden by setting it manually.
+
+Examples:
+```js
+await somiibo.browser().solveCaptcha({
+  auto: true,
+  mode: 'hCaptcha',
+  service: '2Captcha',
+})
+.then(async (response) => {
+  somiibo.log('Solved captcha', response.result); // The token or the response
+  await somiibo.browser().select('the form submit button')
+    .then(() => somiibo.browser().click())
+})
+.catch(async (e) => {
+  somiibo.log('Error solving captcha', e)
+  if (e.code === 'INVALID_KEY' || e.code === 'INVALID_SERVICE' || e.toString().includes('ERROR_KEY_DOES_NOT_EXIST')) {
+    somiibo.alert({ code: '$captcha-api-key', input: '', });
+    somiibo.stop();
+  }
+});
 ```
 
 
@@ -634,7 +692,7 @@ somiibo.log(somiibo.device().getOS());
 
 ### .tabs() methods
 ##### somiibo.tabs().query(fn)
-- `fn` <?[Function]> Function that is called on tab object with `tab` and `index`
+- `fn` <?[function]> Function that is called on tab object with `tab` and `index`
   - Returns
   - `tab` <?[Object]> An **read-only** object representing the tab
     - `id` <?[number]> The ID of the tab
