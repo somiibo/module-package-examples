@@ -357,24 +357,40 @@ await somiibo.browser().navigate('https://google.com', {
 });
 ```
 
-##### somiibo.browser().navigateBack()
+##### somiibo.browser().navigateBack(offset)
+- `offset` <[number]> An offset to navigate backwards
 - returns: <[Promise]> - the promise resolves when the page finishes loading
 
-Navigates the module webpage backwards as if the user pressed the back button.
+Navigates the module webpage backwards as if the user pressed the back button. `offset` is the number of pages in the history to go back and defaults to `1`.
+
+Note: If the `offset` doesn't exist, no navigation will occur.
 
 Examples:
 ```js
 await somiibo.browser().navigateBack();
 ```
 
-##### somiibo.browser().navigateForward()
+##### somiibo.browser().navigateForward(offset)
+- `offset` <[number]> An offset to navigate backwards
 - returns: <[Promise]> - the promise resolves when the page finishes loading
 
-Navigates the module webpage forwards as if the user pressed the forward button.
+Navigates the module webpage forwards as if the user pressed the forward button. `offset` is the number of pages in the history to go forward and defaults to `1`.
+
+Note: If the `offset` doesn't exist, no navigation will occur.
 
 Examples:
 ```js
 await somiibo.browser().navigateForward();
+```
+
+##### somiibo.browser().reload()
+- returns: <[Promise]> - the promise resolves when the page finishes reloading
+
+Reloads the current webpage without affecting the history index.
+
+Examples:
+```js
+await somiibo.browser().reload();
 ```
 
 ##### somiibo.browser().getURL()
