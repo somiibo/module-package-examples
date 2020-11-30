@@ -498,7 +498,7 @@ await somiibo.browser().move(somiibo.browser().$selected, {offsetX: 50, offsetY:
 
 This method moves the mouse to a position or element and stores the result in `somiibo.browser().properties.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
-If `position` is `undefined` or `$selected`, the method will try to click on the currently selected element.
+If `position` is `undefined` or `somiibo.browser().$selected`, the method will try to click on the currently selected element.
 
 Examples:
 ```js
