@@ -496,15 +496,12 @@ await somiibo.browser().move(somiibo.browser().$selected, {offsetX: 50, offsetY:
   - `offsetX` <?[number]> Offset click amount on x axis
   - `offsetY` <?[number]> Offset click amount on y axis
   - `move` <?[boolean]> Whether to move the mouse to the position before the click event is fired
-  - `positionMethod` <?[string]> Control whether the position is calculated `cumulative` (default) or `bounding`
   - `ignoreScrollOffset` <?[boolean]> Whether to ignore `window.scrollX` & `window.scrollY` when calculating path. This should usually be `true` if the target element exists on an overlay or popup.
 - returns: <[Promise]<[Object]>> This method resolves when the in-page mouse click is complete or when page navigation completes (if the click triggers a navigation) and returns the result of the mouse click.
 
 This method moves the mouse to a position or element and stores the result in `somiibo.browser().properties.mouse`. This method is chainable with `.scroll()`, `.click()`, `.move()`, and `.type()`.
 
 If `position` is `undefined` or `somiibo.browser().$selected`, the method will try to click on the currently selected element.
-
-The `positionMethod` determines how the elements **x** and **y** are calculated.
 
 Examples:
 ```js
