@@ -572,7 +572,7 @@ await somiibo.browser().getVariable('myVariable', function (value) {
   - `success` <[boolean]> `true` if the script executed successfully or `false`
   - `result` <`any`> result returned from the `fn` or an [Error] message
 
-This method executes a function in the context of the module webpage
+This method executes a function in the context of the module webpage. Whatever is returned from the function will be passed to the `result` property of the resolved Promise value.
 
 Examples:
 ```js
@@ -584,8 +584,8 @@ await somiibo.browser().execute(async function (one, two, three) {
 }, {
   arguments: [1, 1 + 1, 'three']
 })
-.then((result) => {
-  somiibo.log(result); // Should log: {success: true, result: 'Waited 5 seconds'}
+.then((res) => {
+  somiibo.log(res); // Should log: {success: true, result: 'Waited 5 seconds'}
 })
 ```
 
