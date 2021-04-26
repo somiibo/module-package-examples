@@ -25,7 +25,7 @@
 
 To get started, you simply need to download the free host software at [https://somiibo.com/download](https://somiibo.com/download).
 
-Next, we recommend reading the [Documentation](https://dev.somiibo.com)
+Next, we recommend reading the [documentation](https://dev.somiibo.com) and learning how to create a module for Somiibo.
 
 Happy automating!
 
