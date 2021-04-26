@@ -29,6 +29,6 @@ Next, we recommend reading the [documentation](https://dev.somiibo.com) and lear
 
 Happy automating!
 
-[Documentation](https://dev.somiibo.com) | [Modules Boilerplate](https://github.com/somiibo/module-package-boilerplate) | [Somiibo Website](https://somiibo.com)
+[Documentation](https://dev.somiibo.com) | [Module Boilerplate](https://github.com/somiibo/module-package-boilerplate) | [Somiibo Website](https://somiibo.com)
 
 </div>
