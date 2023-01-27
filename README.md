@@ -31,6 +31,8 @@ Happy automating!
 
 [Documentation](https://dev.somiibo.com) | [Module Boilerplate](https://github.com/somiibo/module-package-boilerplate) | [Somiibo Website](https://somiibo.com)
 
+</div>
+
 ## How to add this package to Somiibo
 
 ### 1. Clone this repo to your computer
@@ -50,5 +52,3 @@ Happy automating!
 - Open a new tab
 - Select the blue "Open a module +" button
 - Select one of the new modules from the module selection interface
-
-</div>
