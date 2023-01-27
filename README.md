@@ -1,7 +1,7 @@
 
 <div align="center">
   <a href="https://somiibo.com">
-    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/old/somiibo-appicon-1024x1024.png">
+    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/old/somiibo-appicon-1024x1024.png" width="128">
   </a>
   <br>
   <br>
