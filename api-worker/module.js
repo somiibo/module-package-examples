@@ -1,5 +1,6 @@
 let somiibo;
 let counter = 0;
+
 async function main(mod) {
   somiibo = mod;
 
@@ -18,23 +19,27 @@ async function main(mod) {
     arguments: [counter],
     url: 'https://google.com',
     // proxy: '',
-    userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
     width: 600,
     height: 800,
     referrer: 'https://google.com',
     timeout: 60000,
     debug: true,
   })
-  .catch(function (e) {
+  .then((worker) => {
+    somiibo.log('Set up worker', worker);
+  })
+  .catch((e) => {
     somiibo.log('Failed to set up worker', e);
   });
 
-  if (counter < 3) {
-    somiibo.loop(main);
-  } else {
-    somiibo.stop();
+  // After we've made 3 workers we can stop the module
+  if (counter >= 3) {
+    return somiibo.stop();
   }
 
+  // Run the main loop
+  return somiibo.loop(main);
 }
 
 module.exports = main;

@@ -1,15 +1,17 @@
 let somiibo;
 let settings;
+
 async function main(mod) {
   somiibo = mod;
 
-  somiibo.initialize(() => {
+  await somiibo.initialize(() => {
     // The .initialize() method is a great place to make changes to the settings
     // Any changed settings are removed after the module stops, so you don't need to worry about accidentally overwriting
     settings = somiibo.getSetting();
     settings.myNumber *= 2;
   });
 
+  // Log the settings for example
   somiibo.log('Individual setting (myNumber):', somiibo.getSetting('myNumber'));
   somiibo.log('Individual setting (myText):', somiibo.getSetting('myText'));
   somiibo.log('Individual setting (myTextArea):', somiibo.getSetting('myTextArea'));
@@ -17,7 +19,9 @@ async function main(mod) {
   somiibo.log('Individual setting (mySelect):', somiibo.getSetting('mySelect'));
   somiibo.log('All settings:', settings);
 
-  somiibo.stop();
+
+  // Quit
+  return somiibo.stop();
 }
 
 module.exports = main;

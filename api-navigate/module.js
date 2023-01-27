@@ -1,21 +1,33 @@
 let somiibo;
+
 async function main(mod) {
   somiibo = mod;
 
-  await somiibo.navigate('https://en.wikipedia.org/wiki/1');
-  await somiibo.navigate('https://en.wikipedia.org/wiki/2');
-  await somiibo.navigate('https://en.wikipedia.org/wiki/3');
-  somiibo.log('Current URL:', somiibo.getURL());
-  await somiibo.navigateBack();
-  somiibo.log('Current URL after 1 .navigateBack():', somiibo.getURL());
-  await somiibo.navigateBack();
-  somiibo.log('Current URL after 2 .navigateBack():', somiibo.getURL());
-  await somiibo.navigateForward();
-  somiibo.log('Current URL after 1 .navigateForward():', somiibo.getURL());
-  await somiibo.navigateForward();
-  somiibo.log('Current URL after 2 .navigateForward():', somiibo.getURL());
+  // Lets navigate 3 times 
+  await somiibo.browser().navigate('https://en.wikipedia.org/wiki/1');
+  await somiibo.browser().navigate('https://en.wikipedia.org/wiki/2');
+  await somiibo.browser().navigate('https://en.wikipedia.org/wiki/3');
 
-  somiibo.stop();
+  // Log the current URL
+  somiibo.log('Current URL:', somiibo.browser().getURL());
+
+  // Navigate back and then log
+  await somiibo.browser().navigateBack();
+  somiibo.log('Current URL after .navigateBack():', somiibo.browser().getURL());
+
+  // Navigate back and then log
+  await somiibo.browser().navigateBack();
+  somiibo.log('Current URL after .navigateBack():', somiibo.browser().getURL());
+
+  // Navigate forward and then log
+  await somiibo.browser().navigateForward();
+  somiibo.log('Current URL after .navigateForward():', somiibo.browser().getURL());
+
+  // Navigate back and then log
+  await somiibo.browser().navigateForward();
+  somiibo.log('Current URL after .navigateForward():', somiibo.browser().getURL());
+
+  return somiibo.stop();
 }
 
 module.exports = main;

@@ -3,7 +3,7 @@ async function main(mod) {
   settings = mod;
 
   // listen for the submit event and handle interval
-  settings.on('submit', function (data) {
+  settings.on('submit', function (event, data) {
 
     // check if the search query is two or more words
     if (data.searchQuery.split(' ').length < 2) {

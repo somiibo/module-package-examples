@@ -14,6 +14,7 @@
       "version": "1.0.0",
       "versionRequired": "0.2.900",
       "status": "online",
+      "url": "https://example.com",
     },
     {
       "id": "9644d19a-73f6-4225-aacd-a7798265dec0",
@@ -24,6 +25,7 @@
       "version": "1.0.0",
       "versionRequired": "0.2.900",
       "status": "online",
+      "url": "https://example.com",
     },
     {
       "id": "1394e2fb-40b0-425c-8dcb-1dbe80dcafc1",
@@ -34,6 +36,7 @@
       "version": "1.0.0",
       "versionRequired": "0.2.900",
       "status": "online",
+      "url": "https://example.com",
     },
     {
       "id": "240d00b9-8109-4bc5-86bd-b00fac07edf5",
@@ -44,6 +47,7 @@
       "version": "1.0.0",
       "versionRequired": "0.2.900",
       "status": "online",
+      "url": "https://example.com",
     },
     {
       "id": "1c83131e-4dd0-4927-b2de-0c5b05a0ed01",
@@ -53,6 +57,7 @@
       "icon": "fa-code",
       "version": "1.0.0",
       "versionRequired": "0.2.900",
+      "url": "https://example.com",
       "status": "online",
       "webview": true,
     },
@@ -64,6 +69,7 @@
       "icon": "fa-code",
       "version": "1.0.0",
       "versionRequired": "0.2.900",
+      "url": "https://example.com",
       "status": "online",
     },
     {

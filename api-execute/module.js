@@ -1,18 +1,21 @@
 let somiibo;
+
 async function main(mod) {
   somiibo = mod;
 
-  await somiibo.execute('fetch("https://jsonplaceholder.typicode.com/users/1").then(resp => resp.json())', {
-    trusted: true,
-  })
-  .then((result) => {
-    somiibo.log(result); // Will be the JSON object from the fetch call
-  })
-  .catch((e) => {
-    somiibo.log('Error during .execute()', e);
-  })
+  // Execute code in the browser
+  await somiibo.browser().execute(async () => {
+    return await fetch('https://jsonplaceholder.typicode.com/users/1').then(resp => resp.json())
+  }, {trusted: true})  
+    .then((response) => {
+      // The response will be the JSON object from the fetch call
+      somiibo.log('Execute response', response);
+    })
+    .catch((e) => {
+      somiibo.log('Error during .execute()', e);
+    })
 
-  somiibo.stop();
+  return somiibo.stop();
 }
 
 module.exports = main;

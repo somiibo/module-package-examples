@@ -1,6 +1,6 @@
 <settings>
   <form>
-    <div id="settings-accordian">
+    <div id="settings-accordian" class="accordian">
       <div class="card">
         <div class="card-body">
           <div class="card-title mb-0">
@@ -11,7 +11,13 @@
           <div class="collapse" id="settings-panel-1" data-parent="#settings-accordian">
             <div class="card-text mt-3">
               <p class="">We can add some helper text here to help the user configure the settings. The <code>settings.html</code> file controls the visual interface of the settings while <code>settings.js</code> controls the logic of the settings page.</p>
-              <p id="my-visualizer">Change any setting field to see this update</p>
+              
+
+							<div class="alert alert-success mt-3" role="alert">
+								<h4 class="alert-heading">Visualizer</h4>
+                <p id="my-visualizer">Change any setting field to see this update</p>
+							</div>              
+
               <div class="form-group">
                 <label for="myNumber">Number input</label>
                 <input type="number" class="form-control" id="myNumber" name="myNumber">
