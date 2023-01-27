@@ -1,7 +1,7 @@
 
 <div align="center">
   <a href="https://somiibo.com">
-    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/somiibo-appicon-320x320.png?cb=1584692584">
+    <img src="https://cdn.itwcreativeworks.com/assets/somiibo/images/app/old/somiibo-appicon-1024x1024.png">
   </a>
   <br>
   <br>
@@ -30,5 +30,25 @@ Next, we recommend reading the [documentation](https://dev.somiibo.com) and lear
 Happy automating!
 
 [Documentation](https://dev.somiibo.com) | [Module Boilerplate](https://github.com/somiibo/module-package-boilerplate) | [Somiibo Website](https://somiibo.com)
+
+## How to add this package to Somiibo
+
+### 1. Clone this repo to your computer
+- Select the "Download ZIP" button at the top of this repository
+- Save it somewhere such as your Desktop
+- Unzip the file to a folder such as `user/Desktop/somiibo-package-examples`
+
+### 2. Import to Somiibo
+- Go to the [app settings](https://app.somiibo.com/?url=somiibo%3A%2F%2Fsettings%3Fclick%3D%2A%5Bhref%3D%27%23packages-panel%27%5D)
+- Select the "Module Packages" panel
+- Add a new package with the gray "+" button
+- Use the blue folder button to open the package you downloaded from **step 1**
+- Select the blue "Add Package" button to confirm
+
+
+### 3. Edit and test
+- Open a new tab
+- Select the blue "Open a module +" button
+- Select one of the new modules from the module selection interface
 
 </div>
